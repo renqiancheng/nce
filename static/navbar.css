@@ -1,0 +1,116 @@
+/* navbar样式 */
+.navbar {
+    background-color: #3b82f6;
+    box-shadow: 0 2px 10px rgba(59, 130, 246, 0.3);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    animation: slideInDown 0.5s ease-out;
+}
+
+.navbar-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.navbar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #ffffff;
+}
+
+.navbar-brand h2 {
+    font-size: 1.5em;
+    margin: 0;
+    font-weight: 700;
+}
+
+.navbar-menu {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-item {
+    margin-left: 30px;
+}
+
+.navbar-link {
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+    padding: 5px 0;
+}
+
+.navbar-link:hover {
+    color: #ffffff;
+}
+
+.navbar-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #ffffff, rgba(255, 255, 255, 0.8));
+    transition: width 0.3s ease;
+}
+
+.navbar-link:hover::after {
+    width: 100%;
+}
+
+.navbar-link.active {
+    color: #ffffff;
+}
+
+.navbar-link.active::after {
+    width: 100%;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .navbar-content {
+        flex-direction: column;
+        padding: 10px 0;
+    }
+    
+    .navbar-menu {
+        margin-top: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .navbar-item {
+        margin: 5px 10px;
+    }
+    
+    .navbar-brand h2 {
+        font-size: 1.2em;
+    }
+}
+
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

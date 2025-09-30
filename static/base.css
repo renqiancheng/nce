@@ -1,0 +1,187 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+}
+
+body {
+    font-family: 'Microsoft YaHei', Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    color: #2d3748;
+    background-color: #ffffff;
+}
+
+
+hr{
+    margin: 5px;
+}
+
+.header {
+    text-align: center;
+    color: white;
+    padding: 20px 0;
+}
+
+.header h1 {
+    font-size: 3em;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #3b82f6;
+    animation: fadeInDown 1s ease-out;
+}
+
+.header p {
+    font-size: 0.8em;
+    color: #718096;
+    animation: fadeInUp 1s ease-out 0.3s both;
+}
+
+.book-container {
+    background-color: #f8fafc;
+    border-radius: 16px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    border: 1px solid #e2e8f0;
+    animation: slideInUp 1s ease-out 0.3s both;
+}
+
+.book-header {
+    text-align: center;
+    margin: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.book-header img{
+    max-width: 100px;
+    border-radius: 12px;
+}
+
+.book-title {
+    color: #333333;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.book-title p{
+    font-size: 12px;
+    color: #718096;
+}
+
+footer {
+    /* 这里是头部和底部的样式，它们的高度是固定的 */
+    padding: 10px;
+    text-align: center;
+    color: #333333;
+    flex-shrink: 0; /* 防止头部和底部在空间不足时收缩 */
+}
+
+footer > p {
+    font-size: 12px;
+    color: #718096;
+}
+
+footer a {
+    color: #3b82f6;
+    font-size: 12px;
+    transition: color 0.2s ease;
+}
+
+footer a:hover {
+    color: #2563eb;
+}
+
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .header h1 {
+        font-size: 1.5em;
+    }
+}
+
+
+/* 自定义滚动条样式 - 适用于所有滚动容器 */
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #3b82f6 #f1f5f9;
+}
+
+/* Chrome, Edge, Safari */
+*::-webkit-scrollbar {
+  width: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 10px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #3b82f6;
+  border-radius: 10px;
+  border: 2px solid #f1f5f9;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: #2563eb;
+}
+
+/* 为特定的可滚动容器添加过渡效果 */
+#content, .book-container {
+  scroll-behavior: smooth;
+}
+
+/* 锚点样式 */
+.book-anchor {
+    position: absolute;
+    top: 70px; /* 导航栏下方 */
+    left: 0;
+    width: 1px;
+    height: 1px;
+    visibility: hidden;
+}
+
+/* 平滑滚动效果 */
+html {
+    scroll-behavior: smooth;
+}

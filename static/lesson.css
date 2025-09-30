@@ -1,0 +1,74 @@
+body{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+#content {
+    flex: 1; /* 让 content 区域占据所有剩余空间 */
+    overflow-y: auto; /* 关键：当内容溢出时，启用垂直滚动 */
+    padding: 10px 5% ;
+    min-height: 0;
+}
+
+#player {
+    display: block; /* 变为块级元素 */
+    margin: 0 auto; /* 左右自动外边距实现居中 */
+}
+
+
+.sentence {
+    background: #ffffff;
+    color: #2d3748;
+    margin: 10px 0;
+    padding: 12px 16px;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    transition: all 0.3s ease;
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+}
+
+.sentence:hover {
+    color: white;
+    transform: translateX(8px);
+    background: linear-gradient(135deg, #3b82f6, #60a5fa);
+    box-shadow: 0 12px 24px rgba(59, 130, 246, 0.3);
+    border-color: transparent;
+}
+
+.sentence.active {
+    color: #ffffff;
+    background: #3b82f6; /* 活跃状态使用主色调 */
+    transform: translateX(8px);
+    box-shadow: 0 12px 24px rgba(59, 130, 246, 0.3);
+    border-color: transparent;
+}
+
+.sentence::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(135deg, #3b82f6, #60a5fa);
+    transform: scaleY(0);
+    transition: transform 0.3s ease;
+}
+
+.sentence:hover::before {
+    transform: scaleY(1);
+}
+
+
+.en {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.cn {
+    font-size: 12px;
+    color: #718096;
+}
