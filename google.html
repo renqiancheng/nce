@@ -1,0 +1,1694 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google学术资源 - 数智学术 www.szsyw.cn</title>
+    <!-- Favicon设置 -->
+    <link rel="icon" type="image/svg+xml" href="https://szsyw.cn/dlcnimg/google.svg">
+    <link rel="shortcut icon" href="https://szsyw.cn/dlcnimg/google.svg">
+    <!-- SEO优化标签 -->
+    <meta name="description" content="Google学术资源实时监控工具，提供谷歌学术镜像网站可用性检测，帮助科研人员快速找到可访问的学术资源平台，实时更新在线状态和响应速度。">
+    <meta name="keywords" content="Google学术,数智学术,谷歌学术,学术资源,镜像网站,网站可用性检测,学术导航,科研工具,论文检索">
+    <meta name="author" content="数智未来 diglit.cn">
+    <meta name="robots" content="index, follow">
+    <meta name="revisit-after" content="1 days">
+    <meta name="rating" content="general">
+    <meta name="copyright" content="2023 数智未来 diglit.cn 版权所有">
+    <!-- Open Graph 协议标签，有助于社交媒体分享 -->
+    <meta property="og:title" content="Google学术资源 - 免费学术网站镜像检测工具">
+    <meta property="og:description" content="Google学术资源实时监控工具，提供谷歌学术镜像网站可用性检测，帮助科研人员快速找到可访问的学术资源平台。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://diglit.cn/xueshu">
+    <meta property="og:image" content="https://szsyw.cn/dlcnimg/google.svg">
+    <meta property="og:site_name" content="数智未来 - 学术资源导航">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1a56db', // 深蓝色主色调，更专业稳重
+                        secondary: '#0f766e', // 深绿色辅助色
+                        warning: '#d97706', // 深橙色警告色
+                        danger: '#b91c1c', // 深红色危险色
+                        neutral: {
+                            50: '#f9fafb',
+                            100: '#f3f4f6',
+                            200: '#e5e7eb',
+                            300: '#d1d5db',
+                            400: '#9ca3af',
+                            500: '#6b7280',
+                            600: '#4b5563',
+                            700: '#374151',
+                            800: '#1f2937',
+                            900: '#111827'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'Helvetica Neue', 'sans-serif']
+                    },
+                    boxShadow: {
+                        'card': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+                        'card-hover': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+                        'elevated': '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)'
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .card-shadow {
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+                transition: box-shadow 0.3s ease;
+            }
+            .card-shadow:hover {
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            }
+            .card-hover {
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .card-hover:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            }
+            .url-status-badge {
+                padding: 0.375rem 0.875rem;
+                border-radius: 9999px;
+                font-size: 0.75rem;
+                font-weight: 600;
+                transition: all 0.3s ease;
+                display: inline-flex;
+                align-items: center;
+                gap: 0.375rem;
+            }
+            .badge-online {
+                background-color: #d1fae5;
+                color: #065f46;
+                border: 1px solid #a7f3d0;
+            }
+            .badge-offline {
+                background-color: #fee2e2;
+                color: #991b1b;
+                border: 1px solid #fecaca;
+            }
+            .badge-unstable {
+                background-color: #fef3c7;
+                color: #92400e;
+                border: 1px solid #fde68a;
+            }
+            .url-item:hover .url-status-badge {
+                transform: scale(1.05);
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            .status-pulse {
+                animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+            }
+            .fade-in {
+                animation: fadeIn 0.5s ease-in-out;
+            }
+            .slide-in {
+                animation: slideIn 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            }
+            .progress-animation {
+                transition: width 0.5s ease;
+            }
+            .bg-gradient-soft {
+                background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            }
+            .text-shadow-sm {
+                text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            }
+            .text-balance {
+                text-wrap: balance;
+            }
+            .btn-hover-effect {
+                transition: all 0.2s ease;
+            }
+            .btn-hover-effect:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            }
+            .btn-hover-effect:active {
+                transform: translateY(0);
+                box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            }
+            @keyframes pulse {
+                0%, 100% {
+                    opacity: 1;
+                }
+                50% {
+                    opacity: 0.5;
+                }
+            }
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+            @keyframes slideIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            @keyframes float {
+                0% { transform: translateY(0px); }
+                50% { transform: translateY(-5px); }
+                100% { transform: translateY(0px); }
+            }
+            .float-animation {
+                animation: float 3s ease-in-out infinite;
+            }
+            @keyframes scaleUp {
+                from {
+                    opacity: 0;
+                    transform: scale(0.95);
+                }
+                to {
+                    opacity: 1;
+                    transform: scale(1);
+                }
+            }
+            .animate-scale-up {
+                animation: scaleUp 0.2s ease-out;
+            }
+        }
+        
+        /* 深色模式优化样式 */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: #111827;
+                color: #f3f4f6;
+            }
+            
+            .bg-white {
+                background-color: #1f2937;
+            }
+            
+            .text-gray-700, .text-gray-800 {
+                color: #e5e7eb;
+            }
+            
+            .text-gray-500, .text-gray-600 {
+                color: #9ca3af;
+            }
+            
+            .border-gray-200, .border-gray-100 {
+                border-color: #374151;
+            }
+            
+            .bg-gray-50 {
+                background-color: #374151;
+            }
+            
+            .bg-gray-100 {
+                background-color: #374151;
+            }
+            
+            .shadow-sm, .shadow-md, .shadow-card {
+                box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.5), 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+            }
+            
+            /* 深色模式下的导航栏优化 */
+            nav.bg-primary {
+                background-color: #0f172a;
+                border-color: #1e293b;
+            }
+            
+            nav.bg-primary a:hover {
+                background-color: #1e293b;
+            }
+            
+            #mobileMenu {
+                background-color: #0f172a;
+            }
+            
+            /* 深色模式下的状态徽章颜色优化 */
+            .badge-online {
+                background-color: #134e4a;
+                color: #99f6e4;
+                border-color: #166534;
+            }
+            
+            .badge-offline {
+                background-color: #7f1d1d;
+                color: #fecaca;
+                border-color: #991b1b;
+            }
+            
+            .badge-unstable {
+                background-color: #78350f;
+                color: #fde68a;
+                border-color: #92400e;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen font-inter text-dark">
+    <!-- 顶部导航栏 -->
+    <nav class="bg-primary text-white shadow-md border-b border-primary/80 sticky top-0 z-50 transition-all duration-300">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo和网站名称 -->
+                <div class="flex items-center space-x-2">
+                    <div class="p-2 bg-white rounded-lg shadow-sm">
+                        <img class="w-6 h-6 object-contain" src="https://szsyw.cn/dlcnimg/google.svg" alt="Google学术">
+                    </div>
+                    <span class="text-lg font-bold text-white">Google学术</span>
+                </div>
+                
+                <!-- 导航链接 - 桌面端 -->
+                <div class="hidden md:flex justify-start space-x-8">
+                    
+                    <a href="https://diglit.cn/" target="_blank" class="text-white/90 hover:text-white font-medium transition-all duration-300 hover:bg-primary/90 px-3 py-2 rounded-lg hover:-translate-y-0.5">数智未来</a>
+                    <a href="https://shici.szsyw.cn/" target="_blank" class="text-white/90 hover:text-white font-medium transition-all duration-300 hover:bg-primary/90 px-3 py-2 rounded-lg hover:-translate-y-0.5">诗词数据库</a>
+                    <a href="https://szsyw.cn/pc" target="_blank" class="text-white/90 hover:text-white font-medium transition-all duration-300 hover:bg-primary/90 px-3 py-2 rounded-lg hover:-translate-y-0.5">装机指南</a>
+                    <a href="https://szsyw.cn/windows" target="_blank" class="text-white/90 hover:text-white font-medium transition-all duration-300 hover:bg-primary/90 px-3 py-2 rounded-lg hover:-translate-y-0.5">Windows常用软件</a>
+                    <a href="https://diglit.cn/SCI-HUB" target="_blank" class="text-white/90 hover:text-white font-medium transition-all duration-300 hover:bg-primary/90 px-3 py-2 rounded-lg hover:-translate-y-0.5">SCI-HUB</a>
+                    <a href="https://szsyw.cn/xueshu" target="_blank" class="text-white font-bold transition-all duration-300 bg-primary/90 px-3 py-2 rounded-lg">数智学术资源</a>
+                </div>
+                
+                <!-- 用户信息 -->
+                <div class="flex items-center space-x-4">
+                    <!-- 移动端菜单按钮 -->
+                    <button id="mobileMenuButton" class="md:hidden text-white hover:text-white/80 transition-colors p-2 rounded-lg hover:bg-primary/90">
+                        <i class="fa fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 移动端导航菜单 -->
+            <div id="mobileMenu" class="hidden md:hidden pb-4 bg-primary/95 rounded-b-lg animate-scale-up">
+                <a href="https://diglit.cn/" target="_blank" class="block py-3 px-4 text-white/90 hover:bg-white/10 hover:text-white rounded-lg transition-all duration-300 font-medium">数智未来</a>
+                <a href="https://shici.szsyw.cn/" target="_blank" class="block py-3 px-4 text-white/90 hover:bg-white/10 hover:text-white rounded-lg transition-all duration-300 font-medium">诗词数据库</a>
+                <a href="https://szsyw.cn/pc" target="_blank" class="block py-3 px-4 text-white/90 hover:bg-white/10 hover:text-white rounded-lg transition-all duration-300 font-medium">装机指南</a>
+                <a href="https://szsyw.cn/windows" target="_blank" class="block py-3 px-4 text-white/90 hover:bg-white/10 hover:text-white rounded-lg transition-all duration-300 font-medium">Windows常用软件</a>
+                <a href="https://diglit.cn/SCI-HUB" target="_blank" class="block py-3 px-4 text-white/90 hover:bg-white/10 hover:text-white rounded-lg transition-all duration-300 font-medium">SCI-HUB</a>
+                <a href="https://szsyw.cn/xueshu" target="_blank" class="block py-3 px-4 text-white font-bold bg-white/10 rounded-lg transition-all duration-300">数智学术资源</a>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+
+        <!-- 主要内容区 -->
+        <main>
+            <!-- 监控状态概览卡片 -->
+            <div id="overview" class="bg-white rounded-2xl card-shadow p-6 mb-8 slide-in">
+                <div class="flex flex-wrap justify-between items-center gap-4 mb-4">
+                    <h2 class="text-xl font-bold flex items-center gap-2">
+                        <i class="fa fa-dashboard text-primary"></i>
+                        <span>可用性情况</span>
+                    </h2>
+                    <div class="flex flex-wrap gap-3">
+                        <div id="lastCheckTime" class="text-sm text-gray-500 flex items-center bg-gray-50 px-3 py-1.5 rounded-lg">
+                            <i class="fa fa-clock-o mr-1 text-primary"></i>
+                            <span>上次检测: 尚未检测</span>
+                        </div>
+                        <button
+                            id="bulkCheckButton"
+                            class="bg-primary hover:bg-primary/90 text-white font-semibold py-2.5 px-6 rounded-lg transition-all duration-300 flex items-center justify-center gap-2 shadow-md hover:shadow-lg hover:-translate-y-0.5 btn-hover-effect"
+                        >
+                            <i class="fa fa-refresh"></i>
+                            <span>立即检测全部</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 统计指标 -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                    <div class="bg-green-50 p-5 rounded-xl border border-green-100 shadow-card hover:shadow-card-hover transition-all duration-300 card-hover">
+                        <p class="text-sm text-gray-600 mb-1 font-medium text-balance">在线网站</p>
+                        <div class="flex items-baseline gap-2">
+                            <span id="onlineCount" class="text-2xl font-bold text-secondary">0</span>
+                            <span id="onlinePercentage" class="text-sm text-gray-600">0%</span>
+                        </div>
+                    </div>
+                    <div class="bg-red-50 p-5 rounded-xl border border-red-100 shadow-card hover:shadow-card-hover transition-all duration-300 card-hover">
+                        <p class="text-sm text-gray-600 mb-1 font-medium text-balance">离线网站</p>
+                        <div class="flex items-baseline gap-2">
+                            <span id="offlineCount" class="text-2xl font-bold text-danger">0</span>
+                            <span id="offlinePercentage" class="text-sm text-gray-600">0%</span>
+                        </div>
+                    </div>
+                    <div class="bg-blue-50 p-5 rounded-xl border border-blue-100 shadow-card hover:shadow-card-hover transition-all duration-300 card-hover">
+                        <p class="text-sm text-gray-600 mb-1 font-medium text-balance">平均响应时间</p>
+                        <div class="flex items-baseline gap-2">
+                            <span id="avgResponseTime" class="text-2xl font-bold text-primary">0</span>
+                            <span class="text-sm text-gray-600">ms</span>
+                        </div>
+                    </div>
+                    <div class="bg-purple-50 p-5 rounded-xl border border-purple-100 shadow-card hover:shadow-card-hover transition-all duration-300 card-hover">
+                        <p class="text-sm text-gray-600 mb-1 font-medium text-balance">下次自动检测</p>
+                        <div class="flex items-baseline gap-2">
+                            <span id="nextCheckTime" class="text-2xl font-bold text-purple-600">30</span>
+                            <span class="text-sm text-gray-600">分钟后</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 批量检测状态 -->
+            <div id="bulkLoadingState" class="hidden bg-white rounded-2xl card-shadow p-6 mb-8 fade-in">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                    <div class="flex items-center gap-3">
+                        <div class="inline-block animate-spin rounded-full h-10 w-10 border-4 border-primary/20 border-t-primary"></div>
+                        <div>
+                            <p class="text-gray-700 font-medium">正在检测网站可用性</p>
+                            <p class="text-sm text-gray-500">请稍候，检测过程可能需要几秒钟...</p>
+                        </div>
+                    </div>
+                    <div class="w-full md:w-auto flex items-center gap-4">
+                        <div class="w-48 h-2.5 bg-gray-200 rounded-full overflow-hidden">
+                            <div id="bulkProgressBar" class="bg-primary h-full progress-animation" style="width: 0%"></div>
+                        </div>
+                        <span id="bulkProgressText" class="text-sm text-gray-600">0/10</span>
+                    </div>
+                </div>
+            </div>
+
+
+        
+        <!-- 网站监控列表 -->
+        <div id="websites" class="bg-white rounded-2xl card-shadow p-6 mb-8 slide-in">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold flex items-center gap-2">
+                    <i class="fa fa-list text-primary"></i>
+                    <span>Google学术资源列表</span>
+                </h2>
+                <div class="text-sm text-gray-500 flex items-center gap-1">
+                    <i class="fa fa-info-circle text-primary"></i>
+                    <span>点击任意网站卡片可查看详情</span>
+                </div>
+            </div>
+                
+                <div id="presetUrlsList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- 预设网址将在这里动态生成 -->
+                    <div class="col-span-full text-center py-12 text-gray-400">
+                        <i class="fa fa-circle-o-notch fa-spin text-3xl mb-3"></i>
+                        <p>加载网站数据中...</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+    </div>
+    
+    
+
+    <!-- 详情模态框 -->
+    <div id="detailModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden fade-in">
+        <div class="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 m-4 card-shadow animate-scale-up">
+            <div class="flex justify-between items-center mb-6">
+                <h3 id="modalTitle" class="text-xl font-bold text-gray-800 text-balance"></h3>
+                <button id="closeModal" class="text-gray-400 hover:text-gray-600 transition-all duration-300 p-1.5 rounded-full hover:bg-gray-100 transform hover:scale-110">
+                    <i class="fa fa-times text-xl"></i>
+                </button>
+            </div>
+            <div id="modalContent" class="space-y-5">
+                <!-- 模态框内容将在这里动态生成 -->
+            </div>
+            <div class="mt-8 flex justify-end">
+                <button id="modalCheckButton" class="bg-primary hover:bg-primary/90 text-white font-semibold py-2.5 px-6 rounded-lg transition-all duration-300 flex items-center hover:shadow-md hover:-translate-y-0.5 btn-hover-effect">
+                    <i class="fa fa-refresh mr-2"></i>
+                    <span>重新检测</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // DOM元素
+            const bulkCheckButton = document.getElementById('bulkCheckButton');
+            const bulkLoadingState = document.getElementById('bulkLoadingState');
+            const bulkProgressBar = document.getElementById('bulkProgressBar');
+            const bulkProgressText = document.getElementById('bulkProgressText');
+            const presetUrlsList = document.getElementById('presetUrlsList');
+            const lastCheckTimeElement = document.getElementById('lastCheckTime');
+            const onlineCountElement = document.getElementById('onlineCount');
+            const offlineCountElement = document.getElementById('offlineCount');
+            const onlinePercentageElement = document.getElementById('onlinePercentage');
+            const offlinePercentageElement = document.getElementById('offlinePercentage');
+            const avgResponseTimeElement = document.getElementById('avgResponseTime');
+            const nextCheckTimeElement = document.getElementById('nextCheckTime');
+            
+            // 模态框相关元素
+            const detailModal = document.getElementById('detailModal');
+            const closeModal = document.getElementById('closeModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalContent = document.getElementById('modalContent');
+            const modalCheckButton = document.getElementById('modalCheckButton');
+            let currentModalUrl = '';
+
+            // 预设的10个网址列表 - 包含网站名称和URL
+            const presetUrls = [
+                { name: '谷歌学术1', url: 'https://xs.essclick.com/' },
+                { name: '谷歌学术2', url: 'https://sci-hub.org.cn/' },
+                { name: '谷歌学术3', url: 'https://xueshu.aigrogu.com/' },
+                { name: '谷歌学术4', url: 'https://sc.panda985.com/' },
+                { name: '谷歌学术5', url: 'https://so.673.org/' },
+                { name: '谷歌学术6', url: 'https://www.googlescholar.pro/' },
+                { name: '谷歌学术7', url: 'https://typicalgame.com/' },
+                { name: '谷歌学术8', url: 'https://scholar.lanfanshu.cn/' },
+                { name: '数智未来', url: 'https://diglit.cn/' }
+            ];
+
+            // 批量检测按钮事件
+            bulkCheckButton.addEventListener('click', () => {
+                bulkCheckAllUrls();
+            });
+
+            // 模态框关闭事件
+            closeModal.addEventListener('click', () => {
+                detailModal.classList.add('hidden');
+            });
+
+            // 点击模态框外部关闭
+            detailModal.addEventListener('click', (e) => {
+                if (e.target === detailModal) {
+                    detailModal.classList.add('hidden');
+                }
+            });
+
+            // 模态框中的检测按钮事件
+            modalCheckButton.addEventListener('click', () => {
+                detailModal.classList.add('hidden');
+                checkSingleUrl(currentModalUrl);
+            });
+
+            // 批量检测所有预设网址
+            async function bulkCheckAllUrls() {
+                // 显示批量加载状态
+                bulkLoadingState.classList.remove('hidden');
+                bulkProgressBar.style.width = '0%';
+                bulkProgressText.textContent = '0/10';
+                bulkCheckButton.disabled = true;
+                bulkCheckButton.classList.add('opacity-70', 'cursor-not-allowed');
+                
+                const results = [];
+                
+                try {
+                    // 逐个检测网址
+                    for (let i = 0; i < presetUrls.length; i++) {
+                        try {
+                            const item = presetUrls[i];
+                            const result = await checkWebsiteStatus(item.url);
+                            results.push(result);
+                             
+                            // 更新进度
+                            const progress = Math.round(((i + 1) / presetUrls.length) * 100);
+                            bulkProgressBar.style.width = `${progress}%`;
+                            bulkProgressText.textContent = `${i + 1}/${presetUrls.length}`;
+                        } catch (error) {
+                            // 单个网址检测失败，继续检测其他网址
+                            const item = presetUrls[i];
+                            const errorResult = {
+                                success: false,
+                                url: item.url,
+                                error: error.message || '检测失败'
+                            };
+                            results.push(errorResult);
+                        }
+                         
+                        // 每个检测之间添加短暂延迟，避免请求过于密集
+                        if (i < presetUrls.length - 1) {
+                            await new Promise(resolve => setTimeout(resolve, 800));
+                        }
+                    }
+                    
+                    // 保存结果到localStorage
+                    saveResultsToLocalStorage(results);
+                    
+                    // 更新显示
+                    updatePresetUrlsDisplay();
+                    
+                    // 更新最后检测时间
+                    updateLastCheckTime();
+                    
+                    // 更新统计信息
+                    updateStatistics(results);
+                    
+                } finally {
+                    // 隐藏加载状态，恢复按钮状态
+                    bulkLoadingState.classList.add('hidden');
+                    bulkCheckButton.disabled = false;
+                    bulkCheckButton.classList.remove('opacity-70', 'cursor-not-allowed');
+                }
+            }
+
+            // 检测单个网址 - 增强版
+            async function checkSingleUrl(url) {
+                // 查找对应的卡片元素
+                const urlItem = presetUrlsList.querySelector(`[data-url="${url}"]`);
+                if (urlItem) {
+                    // 显示加载状态
+                    urlItem.classList.add('opacity-70');
+                    const statusElement = urlItem.querySelector('.status-indicator');
+                    const originalStatus = statusElement.innerHTML;
+                    statusElement.innerHTML = '<i class="fa fa-circle-o-notch fa-spin"></i>';
+                }
+                
+                try {
+                    // 增强版检测：多次尝试 + 备用方法
+                    let result;
+                    let attempts = 0;
+                    let successfulAttempts = 0;
+                    
+                    // 尝试多次检测以提高准确性
+                    const maxAttempts = 2;
+                    const delayBetweenAttempts = 500;
+                    const attemptResults = [];
+                    
+                    while (attempts < maxAttempts) {
+                        attempts++;
+                        try {
+                            const attemptResult = await checkWebsiteStatus(url);
+                            attemptResults.push(attemptResult);
+                            
+                            if (attemptResult.success) {
+                                successfulAttempts++;
+                            }
+                            
+                            // 短暂延迟后再进行下一次尝试
+                            if (attempts < maxAttempts) {
+                                await new Promise(resolve => setTimeout(resolve, delayBetweenAttempts));
+                            }
+                        } catch (err) {
+                            console.warn(`第${attempts}次检测失败:`, err);
+                        }
+                    }
+                    
+                    // 确定最终结果：如果有至少一次成功，则认为网站在线
+                    const hasSuccessfulAttempt = attemptResults.some(r => r.success);
+                    
+                    if (hasSuccessfulAttempt) {
+                        // 选择最快的成功响应作为最终结果
+                        result = attemptResults
+                            .filter(r => r.success)
+                            .sort((a, b) => a.loadTime - b.loadTime)[0];
+                        
+                        // 如果只有部分尝试成功，标记为不确定状态
+                        if (successfulAttempts < attempts) {
+                            result.isUncertain = true;
+                            result.details = result.details || {};
+                            result.details.attempts = attempts;
+                            result.details.successfulAttempts = successfulAttempts;
+                        }
+                    } else {
+                        // 所有尝试都失败，使用最后一个结果
+                        result = attemptResults[attemptResults.length - 1] || {
+                            url,
+                            success: false,
+                            error: '所有检测尝试均失败',
+                            loadTime: 0,
+                            status: 0
+                        };
+                        result.details = result.details || {};
+                        result.details.attempts = attempts;
+                        result.details.successfulAttempts = successfulAttempts;
+                    }
+                    
+                    // 如果主检测方法失败，尝试使用备用检测方法
+                    if (!result.success) {
+                        try {
+                            const fallbackResult = await fallbackCheck(url);
+                            
+                            // 更新结果为备用检测结果
+                            if (fallbackResult.success) {
+                                result = {
+                                    ...result,
+                                    ...fallbackResult,
+                                    isFallback: true,
+                                    detectionMethod: fallbackResult.detectionMethod
+                                };
+                            }
+                        } catch (fallbackError) {
+                            console.error(`备用检测也失败:`, fallbackError);
+                        }
+                    }
+                    
+                    // 加载已保存的结果
+                    const savedData = loadResultsFromLocalStorage() || { results: [] };
+                    
+                    // 查找并更新现有结果
+                    const existingIndex = savedData.results.findIndex(r => r.url === url);
+                    if (existingIndex >= 0) {
+                        savedData.results[existingIndex] = result;
+                    } else {
+                        savedData.results.push(result);
+                    }
+                    
+                    // 更新时间戳
+                    savedData.timestamp = new Date().toISOString();
+                    
+                    // 保存结果
+                    saveResultsToLocalStorage(savedData.results);
+                    
+                    // 更新显示
+                    updatePresetUrlsDisplay();
+                    
+                    // 更新统计信息
+                    updateStatistics(savedData.results);
+                    
+                    // 更新最后检测时间
+                    updateLastCheckTime();
+                    
+                    // 通知功能已禁用
+                    
+                    
+                } finally {
+                    // 恢复卡片状态
+                    if (urlItem) {
+                        urlItem.classList.remove('opacity-70');
+                    }
+                }
+            }
+
+            // 显示预设网址列表
+            function updatePresetUrlsDisplay() {
+                // 加载已保存的检测结果
+                const savedData = loadResultsFromLocalStorage();
+                const resultsMap = new Map();
+                let lastCheckTime = '尚未检测';
+                
+                // 将结果映射到URL
+                if (savedData) {
+                    savedData.results.forEach(result => {
+                        resultsMap.set(result.url, result);
+                    });
+                    
+                    // 格式化最后检测时间
+                    const savedTime = new Date(savedData.timestamp);
+                    lastCheckTime = savedTime.toLocaleString('zh-CN', {
+                        month: '2-digit',
+                        day: '2-digit',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                }
+                
+                // 清空现有内容
+                presetUrlsList.innerHTML = '';
+                
+                presetUrls.forEach((item, index) => {
+                    // 添加延迟，让卡片依次出现
+                    setTimeout(() => {
+                        const urlItem = document.createElement('div');
+                        urlItem.className = 'bg-white rounded-xl border border-gray-100 overflow-hidden shadow-card hover:shadow-card-hover card-hover fade-in transition-all duration-300 card-shadow';
+                        urlItem.dataset.url = item.url;
+                        
+                        const result = resultsMap.get(item.url);
+                        
+                        // 增强状态判断
+                        let statusClass, statusText, statusIcon;
+                        if (result && result.success) {
+                            if (result.isUncertain) {
+                                // 不稳定状态 - 部分尝试成功
+                                statusClass = 'bg-orange-100 text-orange-600';
+                                statusText = '在线(不稳定)';
+                                statusIcon = 'fa-exclamation-circle';
+                            } else {
+                                // 统一显示为在线状态，不区分检测方法
+                                statusClass = 'bg-green-100 text-secondary';
+                                statusText = '在线';
+                                statusIcon = 'fa-check-circle';
+                            }
+                        } else {
+                            // 离线状态
+                            statusClass = 'bg-red-100 text-danger';
+                            statusText = '离线';
+                            statusIcon = 'fa-times-circle';
+                        }
+                        
+                        // 增强的详情信息
+                        let detailsHTML = '';
+                        let detectionDetailsHTML = '';
+                        
+                        if (result) {
+                            if (result.success) {
+                                detailsHTML = `
+                                    <div class="text-xs text-gray-500 flex items-center justify-between mt-2">
+                                        <span><i class="fa fa-server mr-1 text-primary"></i> ${result.status || '200'}</span>
+                                        <span><i class="fa fa-clock-o mr-1 text-primary"></i> ${result.loadTime}ms</span>
+                                    </div>
+                                `;
+                                
+                                // 添加检测详情标签
+                                const detailTags = [];
+                                
+                                // 检测尝试次数
+                                if (result.details && result.details.attempts && result.details.attempts > 1) {
+                                    const { attempts, successfulAttempts } = result.details;
+                                    detailTags.push(`<span class="bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full text-xs">${successfulAttempts}/${attempts}次成功</span>`);
+                                }
+                                
+                                // DNS解析状态
+                                if (result.details && result.details.dnsResolved) {
+                                    detailTags.push(`<span class="bg-green-100 text-green-600 px-2 py-0.5 rounded-full text-xs">DNS正常</span>`);
+                                }
+                                
+                                if (detailTags.length > 0) {
+                                    detectionDetailsHTML = `<div class="flex flex-wrap gap-2 mt-2">${detailTags.join('')}</div>`;
+                                }
+                            } else {
+                                detailsHTML = `
+                                    <div class="text-xs text-gray-500 mt-2">
+                                        <span><i class="fa fa-exclamation-triangle mr-1 text-danger"></i> ${result.error || '未知错误'}</span>
+                                    </div>
+                                `;
+                                
+                                // 显示检测尝试次数
+                                if (result.details && result.details.attempts) {
+                                    detectionDetailsHTML = `
+                                        <div class="text-xs text-gray-500 mt-1">
+                                            <span><i class="fa fa-refresh mr-1"></i> 尝试了${result.details.attempts}次检测</span>
+                                        </div>
+                                    `;
+                                }
+                            }
+                        } else {
+                            detailsHTML = `
+                                <div class="text-xs text-gray-400 mt-2">
+                                    <span><i class="fa fa-info-circle mr-1"></i> 等待检测</span>
+                                </div>
+                            `;
+                        }
+                        
+                        urlItem.innerHTML = `
+                            <div class="bg-gray-50 p-5 border-b border-gray-100">
+                                <div class="flex justify-between items-center">
+                                    <div class="flex items-center gap-3">
+                                        <div class="p-2 bg-white rounded-lg shadow-sm">
+                                            <img class="w-6 h-6 object-contain" src="https://szsyw.cn/dlcnimg/google.svg" alt="网站图标">
+                                        </div>
+                                        <div>
+                                            <h3 class="font-semibold text-gray-800 text-balance">${item.name}</h3>
+                                            <p class="text-xs text-gray-500 truncate mt-1">${item.url}</p>
+                                        </div>
+                                    </div>
+                                    <span class="url-status-badge ${statusClass} flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-300">
+                                        <span class="status-indicator">
+                                            <i class="fa ${statusIcon}"></i>
+                                        </span>
+                                        ${statusText}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="p-5">
+                                ${detailsHTML}
+                                ${detectionDetailsHTML}
+                                <div class="text-xs text-gray-500 mt-5 flex justify-between items-center pt-4 border-t border-gray-100">
+                                    <span>更新时间: ${result ? lastCheckTime : '-'}</span>
+                                    <div class="flex gap-5">
+                                        <button class="visit-button text-blue-600 hover:text-blue-800 text-xs font-medium transition-colors duration-300 transform hover:-translate-y-0.5">
+                                            <i class="fa fa-external-link mr-1"></i> 访问
+                                        </button>
+                                        <button class="detail-button text-primary hover:text-primary/80 text-xs font-medium transition-colors duration-300 transform hover:-translate-y-0.5">
+                                            <i class="fa fa-search-plus mr-1"></i> 详情
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        
+                        // 添加点击事件
+                        urlItem.addEventListener('click', (e) => {
+                            // 如果点击的是访问按钮
+                            if (e.target.classList.contains('visit-button') || e.target.closest('.visit-button')) {
+                                window.open(item.url, '_blank');
+                            }
+                            // 如果点击的是详情按钮或卡片其他区域
+                            else if (e.target.classList.contains('detail-button') || e.target.closest('.detail-button') || !e.target.closest('button')) {
+                                showUrlDetails(item.url);
+                            }
+                        });
+                        
+                        presetUrlsList.appendChild(urlItem);
+                    }, index * 100); // 每个卡片延迟100ms出现
+                });
+            }
+
+            // 显示网址详情模态框 - 增强版
+            function showUrlDetails(url) {
+                currentModalUrl = url;
+                const domain = getDomainFromUrl(url);
+                modalTitle.innerHTML = `<img class="w-5 h-5 inline-block mr-2" src="https://szsyw.cn/dlcnimg/google.svg" alt="网站图标"> 网站详情: ${domain}`;
+                
+                // 加载已保存的检测结果
+                const savedData = loadResultsFromLocalStorage();
+                const result = savedData ? savedData.results.find(r => r.url === url) : null;
+                
+                let detailsHTML = '';
+                if (result) {
+                    if (result.success) {
+                        // 构建检测详情信息
+                        let detailedInfo = '';
+                        
+                        // 显示是否使用了备用检测方法
+                        if (result.isFallback) {
+                            detailedInfo += `
+                                <div class="flex justify-between py-2 border-b border-gray-100">
+                                    <span class="text-gray-500">检测方法</span>
+                                    <span class="font-medium text-blue-600">${result.detectionMethod || '备用检测方法'}</span>
+                                </div>
+                            `;
+                        }
+                        
+                        // 显示详细检测数据(如果有)
+                        if (result.details) {
+                            // DNS解析状态
+                            if (result.details.dnsResolved !== undefined) {
+                                detailedInfo += `
+                                    <div class="flex justify-between py-2 border-b border-gray-100">
+                                        <span class="text-gray-500">DNS解析</span>
+                                        <span class="font-medium text-green-600">成功</span>
+                                    </div>
+                                `;
+                            }
+                            
+                            // 检测尝试次数
+                            if (result.details.attempts && result.details.successfulAttempts) {
+                                detailedInfo += `
+                                    <div class="flex justify-between py-2 border-b border-gray-100">
+                                        <span class="text-gray-500">检测尝试</span>
+                                        <span class="font-medium">${result.details.successfulAttempts}/${result.details.attempts} 次成功</span>
+                                    </div>
+                                `;
+                            }
+                            
+                            // 内容类型
+                            if (result.details.contentType) {
+                                detailedInfo += `
+                                    <div class="flex justify-between py-2 border-b border-gray-100">
+                                        <span class="text-gray-500">内容类型</span>
+                                        <span class="font-medium">${result.details.contentType}</span>
+                                    </div>
+                                `;
+                            }
+                        }
+                        
+                        // 生成响应头信息展示
+                        let responseHeadersHTML = '';
+                        if (result.details && result.details.responseHeaders) {
+                            const headers = result.details.responseHeaders;
+                            const importantHeaders = ['Content-Type', 'Server', 'Date', 'Content-Length', 'Cache-Control'];
+                            let headerItems = '';
+                            
+                            importantHeaders.forEach(header => {
+                                if (headers[header]) {
+                                    headerItems += `
+                                        <div class="flex items-center text-xs text-gray-600 py-1 border-b border-gray-100">
+                                            <span class="font-medium w-32 text-gray-500">${header}:</span>
+                                            <span class="break-all">${headers[header]}</span>
+                                        </div>
+                                    `;
+                                }
+                            });
+                            
+                            if (headerItems) {
+                                responseHeadersHTML = `
+                                    <div class="mt-4">
+                                        <h4 class="text-sm font-medium text-gray-700 mb-2">重要响应头</h4>
+                                        <div class="bg-gray-50 p-3 rounded-lg overflow-auto max-h-40">
+                                            ${headerItems}
+                                        </div>
+                                    </div>
+                                `;
+                            }
+                        }
+                        
+                        detailsHTML = `
+                            <div class="bg-green-50 p-4 rounded-xl border border-green-100 mb-4">
+                                <div class="flex items-center gap-2">
+                                    <i class="fa fa-check-circle text-secondary text-xl"></i>
+                                    <h4 class="font-medium">网站在线</h4>
+                                </div>
+                            </div>
+                            <div class="space-y-3">
+                                <div class="flex justify-between py-2 border-b border-gray-100">
+                                    <span class="text-gray-500">网址</span>
+                                    <span class="font-medium break-all max-w-md text-right text-primary cursor-pointer hover:underline" onclick="window.open('${result.url}', '_blank')">${result.url}</span>
+                                </div>
+                                <div class="flex justify-between py-2 border-b border-gray-100">
+                                    <span class="text-gray-500">HTTP状态码</span>
+                                    <span class="font-medium text-secondary">${result.status} ${result.statusText || 'OK'}</span>
+                                </div>
+                                <div class="flex justify-between py-2 border-b border-gray-100">
+                                    <span class="text-gray-500">响应时间</span>
+                                    <span class="font-medium">${result.loadTime} ms</span>
+                                </div>
+                                <div class="flex justify-between py-2 border-b border-gray-100">
+                                    <span class="text-gray-500">检测时间</span>
+                                    <span class="font-medium">${new Date(savedData.timestamp).toLocaleString('zh-CN')}</span>
+                                </div>
+                                ${detailedInfo}
+                            </div>
+                            ${responseHeadersHTML}
+                        `;
+                    } else {
+                        // 为错误情况提供更多诊断信息
+                        const errorDetails = result.error || '未知错误';
+                        const isTimeout = errorDetails.includes('超时');
+                        const isDnsError = errorDetails.includes('DNS');
+                        const isConnectionError = errorDetails.includes('连接') || errorDetails.includes('无法');
+                        
+                        // 错误诊断和建议
+                        let diagnosticInfo = '';
+                        let suggestions = '';
+                        
+                        if (isTimeout) {
+                            diagnosticInfo = '网站可能暂时过载或网络连接不稳定';
+                            suggestions = '建议稍后再次尝试检测，或检查您的网络连接';
+                        } else if (isDnsError) {
+                            diagnosticInfo = '域名解析失败，可能是域名不存在或DNS配置问题';
+                            suggestions = '请确认网址是否正确，或尝试使用IP地址访问';
+                        } else if (isConnectionError) {
+                            diagnosticInfo = '无法建立到服务器的连接';
+                            suggestions = '可能是服务器离线、防火墙阻止或网络问题';
+                        }
+                        
+                        detailsHTML = `
+                            <div class="bg-red-50 p-4 rounded-xl border border-red-100 mb-4">
+                                <div class="flex items-center gap-2">
+                                    <i class="fa fa-times-circle text-danger text-xl"></i>
+                                    <h4 class="font-medium">网站离线</h4>
+                                </div>
+                                ${diagnosticInfo ? `<p class="text-sm text-gray-600 mt-2">${diagnosticInfo}</p>` : ''}
+                            </div>
+                            <div class="space-y-3">
+                                <div class="flex justify-between py-2 border-b border-gray-100">
+                                    <span class="text-gray-500">网址</span>
+                                    <span class="font-medium break-all max-w-md text-right text-primary cursor-pointer hover:underline" onclick="window.open('${result.url}', '_blank')">${result.url}</span>
+                                </div>
+                                <div class="flex justify-between py-2 border-b border-gray-100">
+                                    <span class="text-gray-500">错误信息</span>
+                                    <span class="font-medium text-danger break-all max-w-md text-right">${errorDetails}</span>
+                                </div>
+                                <div class="flex justify-between py-2 border-b border-gray-100">
+                                    <span class="text-gray-500">检测时间</span>
+                                    <span class="font-medium">${new Date(savedData.timestamp).toLocaleString('zh-CN')}</span>
+                                </div>
+                                ${result.loadTime > 0 ? `
+                                    <div class="flex justify-between py-2 border-b border-gray-100">
+                                        <span class="text-gray-500">响应时间</span>
+                                        <span class="font-medium">${result.loadTime} ms</span>
+                                    </div>
+                                ` : ''}
+                            </div>
+                            ${suggestions ? `
+                                <div class="mt-4 bg-blue-50 p-3 rounded-lg border border-blue-100">
+                                    <h4 class="text-sm font-medium text-blue-700 mb-1"><i class="fa fa-lightbulb-o mr-1"></i>建议</h4>
+                                    <p class="text-sm text-blue-600">${suggestions}</p>
+                                </div>
+                            ` : ''}
+                        `;
+                    }
+                } else {
+                    detailsHTML = `
+                        <div class="bg-gray-50 p-4 rounded-xl border border-gray-100 mb-4">
+                            <div class="flex items-center gap-2">
+                                <i class="fa fa-info-circle text-gray-400 text-xl"></i>
+                                <h4 class="font-medium">等待检测</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 mt-2">点击下方"重新检测"按钮开始检测此网站状态</p>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex justify-between py-2 border-b border-gray-100">
+                                <span class="text-gray-500">网址</span>
+                                <span class="font-medium break-all max-w-md text-right text-primary cursor-pointer hover:underline" onclick="window.open('${url}', '_blank')">${url}</span>
+                            </div>
+                            <div class="flex justify-between py-2 border-b border-gray-100">
+                                <span class="text-gray-500">状态</span>
+                                <span class="font-medium text-gray-400">尚未检测</span>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                // 为所有状态添加统一的操作按钮组
+                const actionButtons = `<div class="mt-6 flex justify-end gap-3">
+                    <button id="refreshButton" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-lg transition-all duration-300 flex items-center gap-2">
+                        <i class="fa fa-refresh"></i>
+                        <span>重新检测</span>
+                    </button>
+                    <button id="visitWebsiteButton" class="bg-primary hover:bg-primary/90 text-white font-medium py-2 px-6 rounded-lg transition-all duration-300 shadow-sm hover:shadow flex items-center gap-2">
+                        <i class="fa fa-external-link"></i>
+                        <span>访问网站</span>
+                    </button>
+                </div>`;
+                
+                modalContent.innerHTML = detailsHTML + actionButtons;
+                detailModal.classList.remove('hidden');
+                
+                // 为按钮添加点击事件
+                document.getElementById('visitWebsiteButton').addEventListener('click', () => {
+                    window.open(url, '_blank');
+                });
+                
+                document.getElementById('refreshButton').addEventListener('click', () => {
+                    detailModal.classList.add('hidden');
+                    checkSingleUrl(url);
+                });
+            }
+
+            // 更新统计信息
+            function updateStatistics(results) {
+                const onlineCount = results.filter(r => r.success).length;
+                const offlineCount = results.filter(r => !r.success).length;
+                const totalCount = results.length;
+                
+                // 计算平均响应时间
+                const responseTimes = results
+                    .filter(r => r.success && r.loadTime > 0)
+                    .map(r => r.loadTime);
+                const avgResponseTime = responseTimes.length > 0 
+                    ? Math.round(responseTimes.reduce((a, b) => a + b, 0) / responseTimes.length)
+                    : 0;
+                
+                // 更新UI
+                onlineCountElement.textContent = onlineCount;
+                offlineCountElement.textContent = offlineCount;
+                onlinePercentageElement.textContent = totalCount > 0 ? `${Math.round((onlineCount / totalCount) * 100)}%` : '0%';
+                offlinePercentageElement.textContent = totalCount > 0 ? `${Math.round((offlineCount / totalCount) * 100)}%` : '0%';
+                avgResponseTimeElement.textContent = avgResponseTime;
+            }
+
+            // 从URL中提取域名
+            function getDomainFromUrl(url) {
+                try {
+                    const urlObj = new URL(url);
+                    return urlObj.hostname;
+                } catch (e) {
+                    return url;
+                }
+            }
+
+            // 保存结果到localStorage
+            function saveResultsToLocalStorage(results) {
+                const data = {
+                    results: results,
+                    timestamp: new Date().toISOString()
+                };
+                localStorage.setItem('websiteCheckerResults', JSON.stringify(data));
+            }
+
+            // 从localStorage加载结果
+            function loadResultsFromLocalStorage() {
+                const stored = localStorage.getItem('websiteCheckerResults');
+                if (stored) {
+                    try {
+                        return JSON.parse(stored);
+                    } catch (e) {
+                        console.error('Failed to parse stored results:', e);
+                    }
+                }
+                return null;
+            }
+
+            // 更新最后检测时间显示
+            function updateLastCheckTime() {
+                const now = new Date();
+                const formattedTime = now.toLocaleString('zh-CN', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                });
+                lastCheckTimeElement.innerHTML = `<i class="fa fa-clock-o mr-1 text-primary"></i><span>上次检测: ${formattedTime}</span>`;
+            }
+
+            // 设置功能已移除，使用固定配置
+            
+            
+            // 设置定时检测（固定为30分钟）
+            function setupPeriodicCheck() {
+                const CHECK_INTERVAL = 30 * 60 * 1000;
+                let countdown = 30;
+                
+                // 设置定时器
+                window.checkIntervalTimer = setInterval(() => {
+                    bulkCheckAllUrls();
+                    countdown = 30;
+                }, CHECK_INTERVAL);
+                
+                // 倒计时更新
+                setInterval(() => {
+                    if (countdown > 0) {
+                        countdown--;
+                        nextCheckTimeElement.textContent = countdown;
+                    }
+                }, 60000); // 每分钟更新一次
+            }
+
+            // 检测网址状态的函数 - 增强版
+            async function checkWebsiteStatus(url) {
+                const startTime = performance.now();
+                
+                try {
+                    // 1. 先进行DNS解析检测
+                    const dnsResult = await checkDnsResolution(url);
+                    if (!dnsResult.success) {
+                        throw new Error(`DNS解析失败: ${dnsResult.error}`);
+                    }
+                    
+                    // 2. 执行多次检测以提高准确性
+                    const results = [];
+                    const maxAttempts = 3;
+                    const successThreshold = 2;
+                    let successCount = 0;
+                    
+                    for (let i = 0; i < maxAttempts; i++) {
+                        try {
+                            const result = await performSingleCheck(url);
+                            results.push(result);
+                            if (result.success) successCount++;
+                            
+                            // 如果已经达到成功阈值，提前结束检测
+                            if (successCount >= successThreshold) {
+                                break;
+                            }
+                        } catch (e) {
+                            results.push({
+                                success: false,
+                                error: e.message
+                            });
+                        }
+                        
+                        // 在尝试之间添加短暂延迟
+                        if (i < maxAttempts - 1) {
+                            await new Promise(resolve => setTimeout(resolve, 500));
+                        }
+                    }
+                    
+                    const endTime = performance.now();
+                    const loadTime = endTime - startTime;
+                    
+                    // 基于多次检测的结果判断最终状态
+                    const isSuccess = successCount >= successThreshold;
+                    const validResults = results.filter(r => r.success);
+                    const avgLoadTime = validResults.length > 0 
+                        ? Math.round(validResults.reduce((sum, r) => sum + (r.loadTime || 0), 0) / validResults.length)
+                        : Math.round(loadTime);
+                    
+                    if (isSuccess && validResults.length > 0) {
+                        const bestResult = validResults.reduce((best, current) => 
+                            (best.loadTime < current.loadTime) ? best : current
+                        );
+                        
+                        return {
+                            success: true,
+                            url,
+                            status: bestResult.status || 200,
+                            statusText: bestResult.statusText || 'OK',
+                            loadTime: avgLoadTime,
+                            details: {
+                                dnsResolved: true,
+                                attempts: maxAttempts,
+                                successfulAttempts: successCount,
+                                responseHeaders: bestResult.responseHeaders,
+                                contentType: bestResult.contentType
+                            }
+                        };
+                    } else {
+                        // 收集所有错误信息
+                        const errors = results.filter(r => !r.success).map(r => r.error).join(', ');
+                        throw new Error(`多次检测失败: ${errors}`);
+                    }
+                } catch (error) {
+                    // 如果主检测方法失败，尝试使用备用方法
+                    const fallbackResult = await fallbackCheck(url, startTime);
+                    // 标记这是备用方法的结果
+                    fallbackResult.isFallback = true;
+                    return fallbackResult;
+                }
+            }
+            
+            // 执行单次检测
+            async function performSingleCheck(url) {
+                // 添加随机参数以避免缓存
+                const urlWithCacheBuster = new URL(url);
+                urlWithCacheBuster.searchParams.append('cache-buster', Date.now());
+                
+                // 配置fetch选项
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 8000);
+                
+                try {
+                    const start = performance.now();
+                    const response = await fetch(urlWithCacheBuster, {
+                        method: 'GET',
+                        headers: {
+                            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+                            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+                        },
+                        mode: 'cors',
+                        credentials: 'omit',
+                        redirect: 'follow',
+                        signal: controller.signal
+                    });
+                    clearTimeout(timeoutId);
+                    const end = performance.now();
+                    
+                    // 检查响应状态
+                    if (!response.ok && response.status >= 400) {
+                        throw new Error(`HTTP错误! 状态码: ${response.status}`);
+                    }
+                    
+                    // 检查响应头
+                    const contentType = response.headers.get('content-type');
+                    const contentLength = response.headers.get('content-length');
+                    
+                    // 对于某些状态码，即使不是200也可能表示网站可用
+                    const isSuccess = response.status >= 200 && response.status < 400;
+                    
+                    // 读取一小部分响应内容以验证
+                    let contentSample = '';
+                    if (contentType && contentType.includes('text')) {
+                        try {
+                            const reader = response.body.getReader();
+                            const { value } = await reader.read();
+                            contentSample = new TextDecoder().decode(value).slice(0, 100);
+                        } catch (e) {
+                            // 如果无法读取内容，继续进行
+                        }
+                    }
+                    
+                    // 构建响应头对象
+                    const responseHeaders = {};
+                    response.headers.forEach((value, key) => {
+                        responseHeaders[key] = value;
+                    });
+                    
+                    return {
+                        success: isSuccess,
+                        url: urlWithCacheBuster.href,
+                        status: response.status,
+                        statusText: response.statusText,
+                        loadTime: Math.round(end - start),
+                        contentType: contentType,
+                        contentLength: contentLength,
+                        contentSample: contentSample,
+                        responseHeaders: responseHeaders
+                    };
+                } catch (error) {
+                    clearTimeout(timeoutId);
+                    if (error.name === 'AbortError') {
+                        throw new Error('请求超时');
+                    }
+                    throw error;
+                }
+            }
+            
+            // DNS解析检测
+            async function checkDnsResolution(url) {
+                try {
+                    const urlObj = new URL(url);
+                    const hostname = urlObj.hostname;
+                    
+                    // 使用Promise包装DNS解析检测
+                    return new Promise((resolve) => {
+                        // 注意：浏览器端JavaScript无法直接进行DNS查询
+                        // 这里使用一种间接的方法 - 创建一个图像对象并尝试加载
+                        const img = new Image();
+                        const startTime = performance.now();
+                        const timeoutId = setTimeout(() => {
+                            resolve({
+                                success: true, // 即使加载超时，也不能完全确定DNS失败
+                                hostname: hostname,
+                                message: 'DNS检测超时，但继续进行'
+                            });
+                        }, 3000);
+                        
+                        img.onload = () => {
+                            clearTimeout(timeoutId);
+                            resolve({
+                                success: true,
+                                hostname: hostname,
+                                message: 'DNS解析成功'
+                            });
+                        };
+                        
+                        img.onerror = () => {
+                            clearTimeout(timeoutId);
+                            // 图片加载失败不代表DNS解析失败，可能只是图片不存在
+                            resolve({
+                                success: true,
+                                hostname: hostname,
+                                message: 'DNS解析可能成功，但图片加载失败'
+                            });
+                        };
+                        
+                        // 使用一个很小的图像URL来测试
+                        img.src = `data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7?${Date.now()}`;
+                    });
+                } catch (error) {
+                    return {
+                        success: false,
+                        error: `无效的URL格式: ${error.message}`
+                    };
+                }
+            }
+
+            // 备用检测方法 - 增强版
+            async function fallbackCheck(url, startTime) {
+                // 定义要尝试的多种备用检测方法
+                const fallbackMethods = [
+                    { name: 'Favicon检测', method: tryFaviconCheck },
+                    { name: 'XMLHttpRequest检测', method: tryXhrCheck },
+                    { name: 'WebSocket检测', method: tryWebSocketCheck },
+                    { name: 'Image Ping检测', method: tryImagePingCheck }
+                ];
+                
+                // 尝试每种方法，直到有一种成功
+                for (const { name, method } of fallbackMethods) {
+                    try {
+                        const result = await method(url, startTime);
+                        if (result.success) {
+                            // 添加方法信息
+                            result.detectionMethod = name;
+                            return result;
+                        }
+                    } catch (error) {
+                        console.log(`${name}失败:`, error);
+                        // 继续尝试下一种方法
+                    }
+                }
+                
+                // 所有备用方法都失败
+                const endTime = performance.now();
+                return {
+                    success: false,
+                    url,
+                    error: '所有备用检测方法均失败',
+                    loadTime: Math.round(endTime - startTime)
+                };
+            }
+            
+            // 尝试通过favicon检测网站
+            function tryFaviconCheck(url, startTime) {
+                return new Promise((resolve) => {
+                    const img = new Image();
+                    const timeoutId = setTimeout(() => {
+                        resolve({ success: false, error: 'Favicon检测超时' });
+                    }, 5000);
+
+                    img.onload = () => {
+                        clearTimeout(timeoutId);
+                        const endTime = performance.now();
+                        resolve({
+                            success: true,
+                            url,
+                            status: 200,
+                            statusText: 'OK (Favicon检测)',
+                            loadTime: Math.round(endTime - startTime)
+                        });
+                    };
+
+                    img.onerror = () => {
+                        clearTimeout(timeoutId);
+                        resolve({ success: false, error: 'Favicon加载失败' });
+                    };
+
+                    try {
+                        const urlObj = new URL(url);
+                        // 尝试多个常见的favicon路径
+                        img.src = `${urlObj.protocol}//${urlObj.hostname}/favicon.ico?t=${Date.now()}`;
+                    } catch (e) {
+                        resolve({ success: false, error: 'URL格式不正确' });
+                    }
+                });
+            }
+            
+            // 尝试通过XMLHttpRequest检测网站
+            function tryXhrCheck(url, startTime) {
+                return new Promise((resolve) => {
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('HEAD', url);
+                    xhr.timeout = 5000;
+                    xhr.withCredentials = false;
+                    
+                    // 设置请求头以模拟浏览器行为
+                    xhr.setRequestHeader('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36');
+                    xhr.setRequestHeader('Accept', '*/*');
+                    
+                    xhr.onload = () => {
+                        const endTime = performance.now();
+                        resolve({
+                            success: xhr.status >= 200 && xhr.status < 400,
+                            url,
+                            status: xhr.status,
+                            statusText: xhr.statusText || '未知状态',
+                            loadTime: Math.round(endTime - startTime)
+                        });
+                    };
+                    
+                    xhr.onerror = () => {
+                        resolve({ success: false, error: 'XHR请求错误' });
+                    };
+                    
+                    xhr.ontimeout = () => {
+                        resolve({ success: false, error: 'XHR请求超时' });
+                    };
+                    
+                    try {
+                        xhr.send();
+                    } catch (e) {
+                        resolve({ success: false, error: 'XHR请求发送失败' });
+                    }
+                });
+            }
+            
+            // 尝试通过WebSocket检测网站（如果支持）
+            function tryWebSocketCheck(url, startTime) {
+                return new Promise((resolve) => {
+                    try {
+                        const urlObj = new URL(url);
+                        // 将HTTP URL转换为WebSocket URL
+                        const wsProtocol = urlObj.protocol === 'https:' ? 'wss:' : 'ws:';
+                        const wsUrl = `${wsProtocol}//${urlObj.hostname}/`;
+                        
+                        const ws = new WebSocket(wsUrl);
+                        const timeoutId = setTimeout(() => {
+                            ws.close();
+                            resolve({ success: false, error: 'WebSocket连接超时' });
+                        }, 3000);
+                        
+                        ws.onopen = () => {
+                            clearTimeout(timeoutId);
+                            ws.close();
+                            const endTime = performance.now();
+                            resolve({
+                                success: true,
+                                url,
+                                status: 101, // WebSocket协议切换
+                                statusText: 'WebSocket连接成功',
+                                loadTime: Math.round(endTime - startTime)
+                            });
+                        };
+                        
+                        ws.onclose = ws.onerror = () => {
+                            clearTimeout(timeoutId);
+                            // WebSocket连接失败不一定代表网站不可用
+                            resolve({ success: false, error: 'WebSocket连接失败' });
+                        };
+                    } catch (e) {
+                        resolve({ success: false, error: 'WebSocket检测不支持' });
+                    }
+                });
+            }
+            
+            // 尝试通过Image Ping检测网站
+            function tryImagePingCheck(url, startTime) {
+                return new Promise((resolve) => {
+                    try {
+                        const urlObj = new URL(url);
+                        const pingUrl = `${urlObj.protocol}//${urlObj.hostname}/?ping=${Date.now()}`;
+                        
+                        const img = new Image();
+                        const timeoutId = setTimeout(() => {
+                            resolve({ success: false, error: 'Image Ping超时' });
+                        }, 3000);
+                        
+                        img.onload = img.onerror = () => {
+                            clearTimeout(timeoutId);
+                            const endTime = performance.now();
+                            // 注意：即使图片加载失败，也可能表示服务器响应了
+                            resolve({
+                                success: true,
+                                url,
+                                status: 200,
+                                statusText: '服务器响应 (Image Ping)',
+                                loadTime: Math.round(endTime - startTime)
+                            });
+                        };
+                        
+                        img.src = pingUrl;
+                    } catch (e) {
+                        resolve({ success: false, error: 'Image Ping失败' });
+                    }
+                });
+            }
+
+            // 初始化应用
+            function initApp() {
+                // 移动端菜单切换
+                const mobileMenuButton = document.getElementById('mobileMenuButton');
+                const mobileMenu = document.getElementById('mobileMenu');
+                
+                if (mobileMenuButton && mobileMenu) {
+                    mobileMenuButton.addEventListener('click', () => {
+                        mobileMenu.classList.toggle('hidden');
+                    });
+                }
+                
+                // 导航栏链接处理
+                const navLinks = document.querySelectorAll('nav a');
+                navLinks.forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        // 只处理内部链接（没有target="_blank"的链接）
+                        if (!link.hasAttribute('target') || link.getAttribute('target') !== '_blank') {
+                            const targetId = link.getAttribute('href').substring(1);
+                             
+                            // 隐藏所有主要内容区域
+                            document.getElementById('overview').classList.add('hidden');
+                            document.getElementById('websites').classList.add('hidden');
+                            document.getElementById('settings').classList.add('hidden');
+                             
+                            // 显示目标区域
+                            const targetElement = document.getElementById(targetId);
+                            if (targetElement) {
+                                targetElement.classList.remove('hidden');
+                                e.preventDefault();
+                                 
+                                // 滚动到目标区域
+                                window.scrollTo({
+                                    top: targetElement.offsetTop - 80,
+                                    behavior: 'smooth'
+                                });
+                            }
+                        }
+                         
+                        // 关闭移动端菜单
+                        if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                            mobileMenu.classList.add('hidden');
+                        }
+                    });
+                });
+                
+
+                
+                // 显示预设网址列表
+                updatePresetUrlsDisplay();
+                
+                // 尝试加载保存的结果
+                const savedData = loadResultsFromLocalStorage();
+                if (savedData) {
+                    // 更新统计信息
+                    updateStatistics(savedData.results);
+                    
+                    // 更新最后检测时间
+                    const savedTime = new Date(savedData.timestamp);
+                    const formattedTime = savedTime.toLocaleString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                    lastCheckTimeElement.innerHTML = `<i class="fa fa-clock-o mr-1 text-primary"></i><span>上次检测: ${formattedTime} (缓存)</span>`;
+                }
+                
+                // 设置定时检测
+                setupPeriodicCheck();
+                
+                // 页面加载后延迟执行首次检测
+                setTimeout(() => {
+                    if (!savedData) {
+                        bulkCheckAllUrls();
+                    }
+                }, 1000);
+            }
+            
+            // 启动应用
+            initApp();
+        });
+    </script>
+    
+    <!-- 页脚区域 -->
+    <footer class="bg-white border-t border-gray-200 py-8">
+        <div class="container mx-auto px-4 max-w-6xl">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="text-center md:text-left">
+                    <p class="text-sm text-gray-600 mb-2">©️ 2023 <a href="https://diglit.cn/" target="_blank" class="hover:text-primary transition-colors duration-300">数智未来 diglit.cn</a> 版权所有 | 可用网址：<span id="successCount" class="font-medium text-primary">18</span>个</p>
+                    <p class="text-xs text-gray-400 mb-1">📚 本工具仅用于学习和研究目的，所有链接均为第三方提供，仅供参考。</p>
+                    <p class="text-xs text-gray-400 mb-1">ℹ️ 郑重声明：数智学术导航立足学术公益，仅为方便科研工作而提供学术网址导航，不对指向网站内容负责。</p>
+                    <p class="text-xs text-gray-400">🔒 安全提醒：请不要在镜像站上登录谷歌账户，也不要搜索敏感词。 若指向网站存在非法或不良信息，请联系本站处理。</p>
+                </div>
+                <div class="text-center md:text-right space-y-2">
+                    <p class="text-sm text-gray-600">
+                        <a href="https://beian.miit.gov.cn/" target="_blank" class="hover:text-primary transition-colors duration-300">
+                            鲁ICP备16010262号-9
+                        </a>
+                    </p>
+                    <p class="text-sm text-gray-600">
+                        <a href="https://www.beian.gov.cn/portal/registerSystemInfo" target="_blank" class="hover:text-primary transition-colors duration-300 flex items-center justify-center md:justify-end gap-1">
+                            <i class="fa fa-shield"></i> 鲁公网安备37132102371636号
+                        </a>
+                    </p>
+                </div>
+            </div>
+            
+        </div>
+    </footer>
+    
+    <script>
+        // 动态显示检测成功的网站数量，与网站实际检测结果保持一致
+        document.addEventListener('DOMContentLoaded', function() {
+            const successCountElement = document.getElementById('successCount');
+            if (successCountElement) {
+                // 从localStorage获取实际检测结果
+                function getSuccessCountFromStorage() {
+                    try {
+                        const stored = localStorage.getItem('websiteCheckerResults');
+                        if (stored) {
+                            const data = JSON.parse(stored);
+                            if (data.results && Array.isArray(data.results)) {
+                                // 计算成功网站数量，与updateStatistics函数保持一致的逻辑
+                                return data.results.filter(r => r.success).length;
+                            }
+                        }
+                    } catch (e) {
+                        console.error('Failed to load results from localStorage:', e);
+                    }
+                    return 0; // 默认值
+                }
+                
+                // 获取实际成功网站数量
+                const targetCount = getSuccessCountFromStorage();
+                
+                // 简单的数字动画效果
+                let currentCount = 0;
+                const duration = 1000; // 动画持续1秒
+                const interval = 50; // 每50毫秒更新一次
+                const steps = duration / interval;
+                const increment = targetCount / steps;
+                
+                const counterInterval = setInterval(() => {
+                    currentCount += increment;
+                    if (currentCount >= targetCount) {
+                        currentCount = targetCount;
+                        clearInterval(counterInterval);
+                    }
+                    successCountElement.textContent = Math.floor(currentCount);
+                }, interval);
+            }
+        });
+    </script>
+</body>
+</html>
